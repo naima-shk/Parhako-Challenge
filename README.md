@@ -1,70 +1,161 @@
-# Getting Started with Create React App
+# Challenge 1 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Set up React Router for our app. We should be able to do the following:
 
-## Available Scripts
+1. Click on the words "Pic Some" in the header to go to the "/" route, which should display the Photos component (found in the pages folder)
 
-In the project directory, you can run:
+2. Click on the shopping cart icon in the header to go to the "/cart" route, which should display the Cart component (found in the pages folder)
 
-### `yarn start`
+# Challenge 2
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Set up the Context for our app.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. In a new file, create a new context with React
+2. In that same file, create a custom component that renders the Provider of the context you created
+3. For now, just pass in an empty string "" as the context provider's value prop
+4. Export the custom Provider component and the full context object (so we can pass it to the useContext hook eventually)
+5. Set up your index.js to use the custom context Provider you created. (You can wrap it as a parent of the Router component)
 
-### `yarn test`
+# Challenge 3
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Add state to our context and pass it through the Provider
 
-### `yarn build`
+1. Add state to hold the array of all photos our app gets from the API
+2. Pass the array of all photos through the value of the provider so it's available anywhere the app accesses the context
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Challenge 4
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Get the JSON data with the photos information from the API and save it to context state
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. As soon as the ContextProvider component renders, get the JSON data from this url: 
+https://raw.githubusercontent.com/bobziroll/scrimba-react-bootcamp-images/master/images.json
 
-### `yarn eject`
+2. Save the array of data that comes back to state.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Review data fetching in React using `fetch`: 
+https://scrimba.com/p/p7P5Hd/c79Jask
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Challenge 5
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Using the data in context state, map over it in the Photos page and display the images.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+ Get the allPhotos array from context
+ map over it, creating <Image /> elements of the component we just made
+ <Image key={???} img={<full image object here>} className={getClass(<index of image>)} />
 
-## Learn More
+ <img src={???} className="image-grid"/>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Challenge 6
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+On the Image component, track the hover state
 
-### Code Splitting
+1. Create state boolean for "hovered"
+2. When the mouse enters the Image's div, set "hovered" to true
+3. When the mouse leaves the Image's div, set "hovered" to false
+4. Log "hovered" to the console so you know it's changing successfully.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+# Challenge 7
 
-### Analyzing the Bundle Size
+Conditionally render the heart and plus icons when an Image component is being hovered on
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. Icon to render for the heart:
+<i className="ri-heart-line favorite"></i>
 
-### Making a Progressive Web App
+2. Icon to render for the plus:
+<i className="ri-add-circle-line cart"></i>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+# Challenge 8
 
-### Advanced Configuration
+Add ability to toggle an image's `isFavorited` property by clicking the heart icon 
+(filled heart doesn't need to display on the image yet)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. Add a toggleFavorite method to context. 
+It should take an `id` parameter and update the array of allPhotos by flipping the
+`isFavorited` property of the photo with the matching `id`
+  a. Have this function also console.log something so we know it's running correctly
+  b. Don't try to modify the individual image object only. 
+  Make sure to provide a whole new array to context with the one item with the matching `id` being changed.
+2. Make it so clicking the heart icon on any given image runs this method
 
-### Deployment
+# Challenge 9
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Make the image display the filled heart icon when it's already favorited
 
-### `yarn build` fails to minify
+Logic to follow:
+* If the image is favorited, display the filled heart icon always
+* Otherwise, if the image being hovered on, display the heart outline instead
+* If it isn't favorited OR hovered on, don't display anything
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Remember to make it so clicking the filled heart icon ALSO runs the toggleFavorite function!
+
+Filled heart icon:
+<i className="ri-heart-fill favorite"></i>
+
+# Challenge 10
+
+Add propTypes to the Image component
+
+1. className should be a string
+2. img should be an object, specifically an object with `id`, `url`, and `isFavorite` properties
+    a. Hint: Specifying the properties of an object is called and object's "shape"
+
+https://reactjs.org/docs/typechecking-with-proptypes.html#proptypes
+
+# Challenge 11
+
+Setup context to manage items in an array called `cartItems`. This will be an array of image objects.
+
+1. Add the `cartItems` state to context. (Array)
+2. Add function to add an image to the cart. (Takes the full image object as parameter)
+3. Make it so clicking the plus icon on the image adds the item to the cart. (Console.log the cart items array to see that it's working)
+
+# Challenge 12
+
+Change the plus icon to a full shopping cart icon when an image is already in the cart. This should display whether the image is being hovered or not (like the favorite icon).
+
+Icon to use when item already in cart:
+<i className="ri-shopping-cart-fill cart"></i>
+
+Hints: 
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+https://stackoverflow.com/a/8217584
+
+# Challenge 13
+
+Make it so clicking the little shopping cart icon on the image removes the item from the cart
+
+# Challenge 14
+
+Change the cart icon in the header to display the full cart icon if there are any items in the cart
+
+Full class name to use WHEN ITEMS IN CART:
+"ri-shopping-cart-fill ri-fw ri-2x"
+
+Full class name to use WHEN CART IS EMPTY:
+"ri-shopping-cart-line ri-fw ri-2x"
+
+# Challenge 15/16
+
+Make it so clicking the trash icon on the Cart page removes that item from the cart
+
+# Challenge 17
+
+Calculate the total cost of the items in the cart and display it on the Cart page
+
+1. Usually the item in the database will have it's own cost saved, but we're assuming every item we sell costs $5.99, so you can just hard code that cost in
+2. To very easily display the total cost in US dollars (or whatever currency you want), use the following:
+
+`<number>.toLocaleString("en-US", {style: "currency", currency: "USD"})`
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString
+
+# Challenge 18
+
+Let our user place their order!
+
+Clicking the "Place Order" button should:
+1. Change the text to "Ordering..."
+2. Timeout for 3 seconds (to simulate an order being placed)
+3. Log "Order placed!" to the console
+4. Empty out the cart
